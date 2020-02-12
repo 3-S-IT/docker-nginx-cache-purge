@@ -1,9 +1,7 @@
 FROM debian:jessie
 
-MAINTAINER Real Geeks "kevin@realgeeks.com"
-
-ENV NGINX_VERSION=1.9.9
-ENV NGX_CACHE_PURGE_VERSION=2.3
+ENV NGINX_VERSION 1.17.6
+ENV NGX_CACHE_PURGE_VERSION=2.5
 
 # Install basic packages and build tools
 RUN apt-get update && apt-get install -y \
@@ -15,9 +13,10 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean
 
 # Get sources
-
-RUN cd /tmp && wget http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz http://labs.frickle.com/files/ngx_cache_purge-$NGX_CACHE_PURGE_VERSION.tar.gz && \
-    tar -zxvf nginx-$NGINX_VERSION.tar.gz && mv nginx-$NGINX_VERSION nginx && rm nginx-$NGINX_VERSION.tar.gz && \
+RUN cd /tmp && \
+    wget "http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz" && \
+    wget "https://github.com/nginx-modules/ngx_cache_purge/archive/${NGX_CACHE_PURGE_VERSION}.tar.gz" -O ngx_cache_purge-$NGX_CACHE_PURGE_VERSION.tar.gz && \
+    tar -zxvf nginx-$NGINX_VERSION.tar.gz && mv nginx-$NGINX_VERSION nginx && rm nginx-$NGINX_VERSION.tar.gz && ls -lhtr /tmp && \
     tar -zxvf ngx_cache_purge-$NGX_CACHE_PURGE_VERSION.tar.gz && mv ngx_cache_purge-$NGX_CACHE_PURGE_VERSION ngx_cache_purge && rm ngx_cache_purge-$NGX_CACHE_PURGE_VERSION.tar.gz
 
 # Configure and build software
